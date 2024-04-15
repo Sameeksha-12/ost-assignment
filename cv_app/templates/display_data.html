@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Display Data</title>
+</head>
+<body>
+    <form id="downloadForm" method="post" action="{% url 'download_excel' %}">
+        {% csrf_token %}
+        <input type="hidden" name="extracted_data_list" id="extractedDataList">
+        <button type="submit">Download Excel</button>
+    </form>
+    <h1>Extracted Data</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Email</th>
+                <th>Contact Number</th>
+                <th>Overall Text</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for extracted_data in extracted_data_list %}
+            <tr>
+                <td>{{ extracted_data.email }}</td>
+                <td>{{ extracted_data.contact_number }}</td>
+                <td>{{ extracted_data.overall_text }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <script>
+        // Serialize and set the extracted_data_list JSON data
+        document.getElementById("extractedDataList").value = JSON.stringify({{ extracted_data_list|safe }});
+    </script>
+</body>
+</html>
